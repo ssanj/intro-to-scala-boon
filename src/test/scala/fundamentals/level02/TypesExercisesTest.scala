@@ -1,128 +1,98 @@
 package fundamentals.level02
 
 import fundamentals.level02.TypesExercises._
-import org.scalactic.TypeCheckedTripleEquals
-import org.scalatest.FunSpec
+import boon._
+import syntax._
 
-class TypesExercisesTest extends FunSpec with TypeCheckedTripleEquals {
+object TypesExercisesTest extends SuiteLike("TypesExercisesTest") {
 
-  describe("showPerson1") {
-
-    it("should turn Bob into a String") {
-      val person = Person("Bob", 50)
-
-      val str = showPerson1(person)
-
-      assert(str === "Bob is 50 years old")
-    }
-
+  val t1 = test("showPerson1") {
+    val person = Person("Bob", 50)
+    showPerson1(person) =?= "Bob is 50 years old" | "should turn Bob into a String"
   }
 
-  describe("showPerson2") {
-
-    it("should turn Bob into a String") {
-      val person = Person("Bob", 50)
-
-      val str = showPerson2(person)
-
-      assert(str === "Bob is 50 years old")
-    }
-
+  val t2 = test("showPerson2") {
+    val person = Person("Bob", 50)
+    val updatedPerson = defer(showPerson2(person))
+    updatedPerson.run() =?= "Bob is 50 years old" | "should turn Bob into a String"
   }
 
-  describe("changeName") {
+  val t3 = test("changeName") {
+    val person = Person("Bob", 50)
+    val updatedPerson = defer(changeName("Sarah", person))
 
-    it("should update the Person's name") {
-      val person = Person("Bob", 50)
-
-      val updatedPerson = changeName("Sarah", person)
-
-      assert(updatedPerson === Person("Sarah", 50))
-      assert(person === Person("Bob", 50)) // assertion is unnecessary, but shows immutability
-    }
-
+    (updatedPerson.run() =?= Person("Sarah", 50) | "should update the Person's name") &
+    (person =?= Person("Bob", 50) | "Should copy person") // assertion is unnecessary, but shows immutability
   }
 
-  describe("showWallet") {
-
-    it("should show the wallet amount as a String") {
-      val wallet = Wallet(23.4)
-
-      val str = showWallet(wallet)
-
-      assert(str === "The wallet amount is 23.4")
-    }
-
+  val t4 = test("showWallet") {
+    val wallet = Wallet(23.4)
+    val str = defer(showWallet(wallet))
+    str.run() =?= "The wallet amount is 23.4" | "should show the wallet amount as a String"
   }
 
-  describe("purchase") {
-
-    it("should return a wallet with cost deducted") {
-      val wallet = Wallet(100)
-
-      val updatedWallet = purchase(25, wallet)
-
-      assert(updatedWallet === Wallet(75))
-      assert(wallet === Wallet(100)) // `wallet` hasn't been mutated
-    }
-
+  val t5 = test("purchase") {
+    val wallet = Wallet(100)
+    val updatedWallet = defer(purchase(25, wallet))
+    (updatedWallet.run() =?= Wallet(75) | "should return a wallet with cost deducted") &
+    (wallet =?= Wallet(100) | "should not mutate the original wallet")
   }
 
-  describe("showTrafficLightStr") {
+  // describe("showTrafficLightStr") {
 
-    it("should show red") {
-      val str = showTrafficLightStr("red")
+  //   it("should show red") {
+  //     val str = showTrafficLightStr("red")
 
-      assert(str === "The traffic light is red")
-    }
+  //     assert(str === "The traffic light is red")
+  //   }
 
-    it("should show yellow") {
-      val str = showTrafficLightStr("yellow")
+  //   it("should show yellow") {
+  //     val str = showTrafficLightStr("yellow")
 
-      assert(str === "The traffic light is yellow")
-    }
+  //     assert(str === "The traffic light is yellow")
+  //   }
 
-    it("should show green") {
-      val str = showTrafficLightStr("green")
+  //   it("should show green") {
+  //     val str = showTrafficLightStr("green")
 
-      assert(str === "The traffic light is green")
-    }
+  //     assert(str === "The traffic light is green")
+  //   }
 
-    it("should return a default on other inputs") {
-      ???
-    }
+  //   it("should return a default on other inputs") {
+  //     ???
+  //   }
 
-    it("should show flashing") {
-      ???
-    }
+  //   it("should show flashing") {
+  //     ???
+  //   }
 
-  }
+  // }
 
-  describe("showTrafficLight") {
+  // describe("showTrafficLight") {
 
-    it("should show Red") {
-      val str = showTrafficLight(Red)
+  //   it("should show Red") {
+  //     val str = showTrafficLight(Red)
 
-      assert(str === "The traffic light is red")
-    }
+  //     assert(str === "The traffic light is red")
+  //   }
 
-    it("should show Yellow") {
-      val str = showTrafficLight(Yellow)
+  //   it("should show Yellow") {
+  //     val str = showTrafficLight(Yellow)
 
-      assert(str === "The traffic light is yellow")
-    }
+  //     assert(str === "The traffic light is yellow")
+  //   }
 
-    it("should show Green") {
-      val str = showTrafficLight(Green)
+  //   it("should show Green") {
+  //     val str = showTrafficLight(Green)
 
-      assert(str === "The traffic light is green")
-    }
+  //     assert(str === "The traffic light is green")
+  //   }
 
-    it("should show Flashing") {
-      ???
-    }
+  //   it("should show Flashing") {
+  //     ???
+  //   }
 
-  }
+  // }
 
-
+  val tests = NonEmptySeq.nes(t1, t2, t3, t4, t5)
 }

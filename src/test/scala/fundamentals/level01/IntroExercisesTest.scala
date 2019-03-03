@@ -24,7 +24,7 @@ object IntroExercisesTest extends SuiteLike("IntroExerciseTest") {
 
   val t4 = test("puzzlers") {
     (foo(1) =?= 1 | "foo is the'identity' function") &
-    (bar(1).isInstanceOf[Int] =?= true | "bar can be any Int")
+    (bar(1).isInstanceOf[Int] | "bar can be any Int")
   }
 
   val t5 = test("timesTwoIfEven") {
