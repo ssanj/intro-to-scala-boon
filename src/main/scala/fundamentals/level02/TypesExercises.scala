@@ -36,10 +36,10 @@ object TypesExercises {
     *
     * This uses a technique called pattern matching. You will see more of this later.
     **/
-  def showPerson1(person: Person): String = ???
-    // person match {
-    //   case Person(name, age) => s"${name} is ${age} years old"
-    // }
+  def showPerson1(person: Person): String =
+    person match {
+      case Person(name, age) => s"${name} is ${age} years old"
+    }
 
   /**
     * Same as `showPerson1`, but using string interpolation only.
@@ -102,7 +102,13 @@ object TypesExercises {
     * Go to `TypesExercisesTest.scala` and implement the test for this scenario: "should return a default on other inputs"
     *
     **/
-  def showTrafficLightStr(trafficLight: String): String = ???
+  def showTrafficLightStr(trafficLight: String): String = trafficLight match {
+    case "red" => "The traffic light is red"
+    case "yellow" => "The traffic light is yellow"
+    case "green" => "The traffic light is green"
+    case "flashing" => "The traffic light is flashing"
+    case other => s"invalid traffic light: $other"
+  }
 
   /**
     * We have a new traffic light called Flashing.
