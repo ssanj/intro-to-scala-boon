@@ -39,26 +39,36 @@ object TypesExercisesTest extends SuiteLike("TypesExercisesTest") {
   }
 
   val t6 = test("showTrafficLightStr") {
-    {
+    def assertRed: ContinueSyntax = {
       val str = defer(showTrafficLightStr("red"))
       str =?= "The traffic light is red" | "should show red"
-    } &
-    {
+    }
+
+    def assertYellow: ContinueSyntax = {
       val str = defer(showTrafficLightStr("yellow"))
       str =?= "The traffic light is yellow" | "should show yellow"
-    } &
-    {
+    }
+
+    def assertGreen: ContinueSyntax = {
       val str = defer(showTrafficLightStr("green"))
       str =?= "The traffic light is green" | "should show green"
-    } &
-    {
+    }
+
+    def assertPurple: ContinueSyntax = {
       val str = defer(showTrafficLightStr("purple"))
       str =?= "invalid traffic light: purple" | "should return a default on other inputs"
-    } &
-    {
+    }
+
+    def assertFlashing: ContinueSyntax = {
       val str = defer(showTrafficLightStr("flashing"))
       str  =?= "The traffic light is flashing" | "should show flashing"
     }
+
+    assertRed &
+    assertYellow &
+    assertGreen &
+    assertPurple &
+    assertFlashing
   }
 
   // describe("showTrafficLight") {
