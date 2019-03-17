@@ -3,7 +3,7 @@ name := "intro-to-scala-boon"
 version := "0.1"
 
 libraryDependencies ++= Seq(
-  "net.ssanj" %% "boon" % "0.0.1-b11" % Test,
+  "net.ssanj" %% "boon" % "0.0.1-b19" % Test,
   "org.scalatest" %% "scalatest" % "3.0.5" % Test
 )
 

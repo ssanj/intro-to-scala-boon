@@ -34,10 +34,11 @@ object ExceptionExercisesTest extends SuiteLike("ExceptionExercisesTest") {
     createValidPeople =?= List(Person("Tokyo", 30), Person("Berlin", 43)) | "should return a List of Person instances"
   }
 
-  val t5 = test("collectErrors") {
+  val t5 = test2("collectErrors") {
 
-    def assertSameException(e1: Exception, e2: Exception): Boolean =
-      e1.getClass == e2.getClass && e1.getMessage == e2.getMessage
+    def assertSameException(e1: Exception, e2: Exception): ContinueSyntax =
+      e1.getClass == e2.getClass | "ex class" and
+      e1.getMessage =?= e2.getMessage | "ex message"
 
     val expectedErrors = List(
       new InvalidAgeValueException("provided age is invalid: 5o"),
@@ -48,13 +49,14 @@ object ExceptionExercisesTest extends SuiteLike("ExceptionExercisesTest") {
 
     !collectErrors.isEmpty | "have errors" and
     collectErrors.size =?= expectedErrors.size | "have expected number of errors" and
-    {
+    % {
       val assertions = collectErrors.zip(expectedErrors).map {
-          case (e1, e2) => assertSameException(e1, e2)
+        case (e1, e2) => assertSameException(e1, e2)
       }
 
-      assertions.foldLeft(true)(_ && _) | "should return a List Exceptions thrown while processing inputs"
-    }
+      assertions.reduce(_ and _)
+
+    } sequentially()
   }
 
   override val tests = NonEmptySeq.nes(t1, t2, t3, t4, t5)
