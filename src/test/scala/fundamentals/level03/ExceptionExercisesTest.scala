@@ -7,34 +7,55 @@ import syntax._
 object ExceptionExercisesTest extends SuiteLike("ExceptionExercisesTest") {
 
   val t1 = test("getName") {
-    getName("Fred") =?= "Fred" | "should return valid name if supplied" and
-    getName("") =!=[EmptyNameException](_ =?= "provided name is empty" | "should throw an EmptyNameException if the name supplied is empty")
+    ->>(
+        getName("Fred") =?= "Fred" | "should return valid name if supplied",
+
+        getName("") =!=[EmptyNameException](_ =?= "provided name is empty" |
+          "should throw an EmptyNameException if the name supplied is empty")
+    )
   }
 
   val t2 = test("getAge") {
-      getAge("20") =?= 20 | "should return valid age if supplied" and
-      getAge("Fred") =!=[InvalidAgeValueException](_ =?= "provided age is invalid: Fred" |
-        "should throw an InvalidAgeValueException if the age supplied is not an Int") and
-      getAge("0") =!=[InvalidAgeRangeException](_ =?= "provided age should be between 1-120: 0" |
-        "should throw an InvalidAgeRangeException if the age supplied is lower than range 1-120") and
-      getAge("1") =?= 1 | "should accept an age of one" and
-      getAge("120")   =?= 120 | "should accept an age of a hundred and twenty" and
-      getAge("121") =!=[InvalidAgeRangeException](_ =?= "provided age should be between 1-120: 121" |
-        "should throw an InvalidAgeRangeException if the age supplied is higher than range 1-120")
+    ->>(
+        getAge("20") =?= 20 | "should return valid age if supplied",
+
+        getAge("Fred") =!=[InvalidAgeValueException](_ =?= "provided age is invalid: Fred" |
+          "should throw an InvalidAgeValueException if the age supplied is not an Int"),
+
+        getAge("0") =!=[InvalidAgeRangeException](_ =?= "provided age should be between 1-120: 0" |
+          "should throw an InvalidAgeRangeException if the age supplied is lower than range 1-120"),
+
+        getAge("1") =?= 1 | "should accept an age of one",
+
+        getAge("120")   =?= 120 | "should accept an age of a hundred and twenty",
+
+        getAge("121") =!=[InvalidAgeRangeException](_ =?= "provided age should be between 1-120: 121" |
+          "should throw an InvalidAgeRangeException if the age supplied is higher than range 1-120")
+    )
   }
 
   val t3 = test("createPerson") {
-    createPerson("Fred", "32") =?= Person("Fred", 32) | "should return Person if supplied a valid name and age" and
-    createPerson("", "32") =!=[EmptyNameException](_ =?= "provided name is empty" | "should throw an EmptyNameException if the name supplied is empty") and
-    createPerson("Fred", "ThirtyTwo") =!=[InvalidAgeValueException](_ =?= "provided age is invalid: ThirtyTwo" | "should throw an InvalidAgeValueException if the age supplied is not an Int") and
-    createPerson("Fred", "150") =!=[InvalidAgeRangeException](_ =?= "provided age should be between 1-120: 150" | "should throw an InvalidAgeRangeException if the age supplied is not between 1 and 120")
+    ->>(
+        createPerson("Fred", "32") =?= Person("Fred", 32) |
+          "should return Person if supplied a valid name and age",
+
+        createPerson("", "32") =!=[EmptyNameException](_ =?= "provided name is empty" |
+          "should throw an EmptyNameException if the name supplied is empty"),
+
+        createPerson("Fred", "ThirtyTwo") =!=[InvalidAgeValueException](_ =?= "provided age is invalid: ThirtyTwo" |
+          "should throw an InvalidAgeValueException if the age supplied is not an Int"),
+
+        createPerson("Fred", "150") =!=[InvalidAgeRangeException](_ =?= "provided age should be between 1-120: 150" |
+          "should throw an InvalidAgeRangeException if the age supplied is not between 1 and 120")
+    )
   }
 
   val t4 = test("createValidPeople") {
-    createValidPeople =?= List(Person("Tokyo", 30), Person("Berlin", 43)) | "should return a List of Person instances"
+    createValidPeople =?= List(Person("Tokyo", 30), Person("Berlin", 43)) |
+      "should return a List of Person instances"
   }
 
-  val t5 = test2("collectErrors") {
+  val t5 = test("collectErrors") {
 
     def assertSameException(e1: Exception, e2: Exception): ContinueSyntax =
       e1.getClass == e2.getClass | "ex class" and
@@ -47,16 +68,20 @@ object ExceptionExercisesTest extends SuiteLike("ExceptionExercisesTest") {
       new EmptyNameException("provided name is empty")
     )
 
-    !collectErrors.isEmpty | "have errors" and
-    collectErrors.size =?= expectedErrors.size | "have expected number of errors" and
-    % {
-      val assertions = collectErrors.zip(expectedErrors).map {
-        case (e1, e2) => assertSameException(e1, e2)
+    ->|>(
+      !collectErrors.isEmpty | "have errors",
+
+      collectErrors.size =?= expectedErrors.size | "have expected number of errors",
+
+      % {
+        val assertions = collectErrors.zip(expectedErrors).map {
+          case (e1, e2) => assertSameException(e1, e2)
+        }
+
+        //we know collectErrors is not empty so we can call .head safely
+        NonEmptySeq.nes(assertions.head, assertions.tail:_*)
       }
-
-      assertions.reduce(_ and _)
-
-    } sequentially()
+    )
   }
 
   override val tests = NonEmptySeq.nes(t1, t2, t3, t4, t5)
