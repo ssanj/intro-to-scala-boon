@@ -2,24 +2,28 @@ package fundamentals.level02
 
 import fundamentals.level02.TypesExercises._
 import boon._
+import boon.model.BoonType
 import syntax._
 
-object TypesExercisesTest extends SuiteLike("TypesExercisesTest") {
+object TypesExercisesSuite extends SuiteLike("TypesExercisesTest") {
 
-  val t1 = test("showPerson1") {
+  private implicit val personBoonType = BoonType.defaults[Person]
+  private implicit val walletBoonType = BoonType.defaults[Wallet]
+
+  private val t1 = test("showPerson1") {
     val person = Person("Bob", 50)
 
     showPerson1(person) =?= "Bob is 50 years old" | "should turn Bob into a String"
   }
 
-  val t2 = test("showPerson2") {
+  private val t2 = test("showPerson2") {
     val person = Person("Bob", 50)
     val updatedPerson = showPerson2(person)
 
     updatedPerson =?= "Bob is 50 years old" | "should turn Bob into a String"
   }
 
-  val t3 = test("changeName") {
+  private val t3 = test("changeName") {
     val person = Person("Bob", 50)
     val updatedPerson = changeName("Sarah", person)
 
@@ -27,14 +31,14 @@ object TypesExercisesTest extends SuiteLike("TypesExercisesTest") {
     person        =?= Person("Bob", 50)   | "Should copy person" // assertion is unnecessary, but shows immutability
   }
 
-  val t4 = test("showWallet") {
+  private val t4 = test("showWallet") {
     val wallet = Wallet(23.4)
     val str = showWallet(wallet)
 
     str =?= "The wallet amount is 23.4" | "should show the wallet amount as a String"
   }
 
-  val t5 = test("purchase") {
+  private val t5 = test("purchase") {
     val wallet = Wallet(100)
     val updatedWallet = purchase(25, wallet)
 
@@ -42,7 +46,7 @@ object TypesExercisesTest extends SuiteLike("TypesExercisesTest") {
     wallet        =?= Wallet(100) | "should not mutate the original wallet"
   }
 
-  val t6 = test("showTrafficLightStr") {
+  private val t6 = test("showTrafficLightStr") {
     ->>(
       showTrafficLightStr("red")      =?= "The traffic light is red"      | "should show red"   ,
 

@@ -3,19 +3,22 @@ package fundamentals.level02
 import fundamentals.level02.ListExercises._
 import fundamentals.level02.TypesExercises.{Person, showPerson1}
 import boon._
+import boon.model.BoonType
 import syntax._
 
 object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
 
-  val t1 = test("prepend") {
+  private implicit val personBoonType = BoonType.defaults[Person]
+
+  private val t1 = test("prepend") {
     prependToList(1, List(2, 3, 4)) =?= List(1, 2, 3, 4) | "should add an element to the start of the List"
   }
 
-  val t2 = test("append") {
+  private val t2 = test("append") {
     appendToList(1, List(2, 3, 4)) =?= List(2, 3, 4, 1) | "should add an element to the end of the List"
   }
 
-  val t3 = test("empty") {
+  private val t3 = test("empty") {
     ->>(
       isEmptyList(Nil) | "should return True for Nil",
 
@@ -23,7 +26,7 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
     )
   }
 
-  val t4 = test("size") {
+  private val t4 = test("size") {
     ->>(
       showListSize(Nil) =?= "This is an empty list" | "should show size for Nil",
 
@@ -31,7 +34,7 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
     )
   }
 
-  val t5 = test("map") {
+  private val t5 = test("map") {
     ->>(
       addNumToEach(5, Nil) =?= Nil | "should return Nil given Nil",
 
@@ -40,11 +43,11 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
     )
   }
 
-  val t6 = test("filter") {
+  private val t6 = test("filter") {
     filterEven(List(1, 2, 3, 4, 5, 6)) == List(2, 4, 6) | "should return even numbers"
   }
 
-  val t7 = test("product") {
+  private val t7 = test("product") {
     ->>(
       product(Nil) =?= 1 | "should return 1 given Nil",
 
@@ -52,7 +55,7 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
     )
   }
 
-  val t8 = test("min") {
+  private val t8 = test("min") {
     ->>(
       min(Nil) =?= Int.MinValue | "should return smallest Int given Nil",
 
@@ -60,7 +63,7 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
     )
   }
 
-  val t9 = test("youngest") {
+  private val t9 = test("youngest") {
     ->>(
       youngestPerson(Nil) =?= Person("Nobody", 0) | "should return a silly default person given Nil",
 
@@ -72,7 +75,7 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
     )
   }
 
- val t10 = test("personWithIndex") {
+  private val t10 = test("personWithIndex") {
     personWithIndex(peopleList) =?= (
       List((Person("Matt Murdock",            30), 1),
            (Person("Karen Page",              27), 2),
@@ -81,42 +84,41 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
            (Person("Wilson Fisk",             42), 5),
            (Person("Elektra Natchios",        27), 6))
     ) | "should return each person with their 1-based index"
- }
+  }
 
-val t11 = test("showEveryNthPerson") {
-    val people = ListExercises.peopleList
-    val all = people.map(showPerson1)
+  private val t11 = test("showEveryNthPerson") {
+      val people = ListExercises.peopleList
+      val all = people.map(showPerson1)
 
-    ->>(
-      showEveryNthPerson(-5, people) =?= all | "negative index",
+      ->>(
+        showEveryNthPerson(-5, people) =?= all | "negative index",
 
-      showEveryNthPerson(0, people)  =?= all | "index zero",
+        showEveryNthPerson(0, people)  =?= all | "index zero",
 
-      showEveryNthPerson(1, people)  =?= all | "index one",
+        showEveryNthPerson(1, people)  =?= all | "index one",
 
-      showEveryNthPerson(2, people)  =?= (
-        List(
-              "Karen Page is 27 years old",
-              "Claire Temple is 32 years old",
-              "Elektra Natchios is 27 years old"
-        )) | "index two",
+        showEveryNthPerson(2, people)  =?= (
+          List(
+                "Karen Page is 27 years old",
+                "Claire Temple is 32 years old",
+                "Elektra Natchios is 27 years old"
+          )) | "index two",
 
-      showEveryNthPerson(3, people)  =?= (
-        List(
-              "Franklin 'Foggy' Nelson is 31 years old",
-              "Elektra Natchios is 27 years old"
-        )) | "index three",
+        showEveryNthPerson(3, people)  =?= (
+          List(
+                "Franklin 'Foggy' Nelson is 31 years old",
+                "Elektra Natchios is 27 years old"
+          )) | "index three",
 
-      showEveryNthPerson(5, people)  =?= List("Wilson Fisk is 42 years old") |  "index four",
+        showEveryNthPerson(5, people)  =?= List("Wilson Fisk is 42 years old") |  "index four",
 
-      showEveryNthPerson(6, people)  =?= List("Elektra Natchios is 27 years old")  | "index five",
+        showEveryNthPerson(6, people)  =?= List("Elektra Natchios is 27 years old")  | "index five",
 
-      showEveryNthPerson(8, people)  =?= Nil  | "index six"
-    )
-}
+        showEveryNthPerson(8, people)  =?= Nil  | "index six"
+      )
+  }
 
   override def tests = NonEmptySeq.nes(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11)
-
 
   // describe("getNames") {
 

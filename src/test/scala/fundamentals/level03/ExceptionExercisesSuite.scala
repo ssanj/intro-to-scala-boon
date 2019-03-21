@@ -2,11 +2,14 @@ package fundamentals.level03
 
 import fundamentals.level03.ExceptionExercises._
 import boon._
+import boon.model.BoonType
 import syntax._
 
-object ExceptionExercisesTest extends SuiteLike("ExceptionExercisesTest") {
+object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
 
-  val t1 = test("getName") {
+  private implicit val personBoonType = BoonType.defaults[Person]
+
+  private val t1 = test("getName") {
     ->>(
         getName("Fred") =?= "Fred" | "should return valid name if supplied",
 
@@ -15,7 +18,7 @@ object ExceptionExercisesTest extends SuiteLike("ExceptionExercisesTest") {
     )
   }
 
-  val t2 = test("getAge") {
+  private val t2 = test("getAge") {
     ->>(
         getAge("20") =?= 20 | "should return valid age if supplied",
 
@@ -34,7 +37,7 @@ object ExceptionExercisesTest extends SuiteLike("ExceptionExercisesTest") {
     )
   }
 
-  val t3 = test("createPerson") {
+  private val t3 = test("createPerson") {
     ->>(
         createPerson("Fred", "32") =?= Person("Fred", 32) |
           "should return Person if supplied a valid name and age",
@@ -50,12 +53,12 @@ object ExceptionExercisesTest extends SuiteLike("ExceptionExercisesTest") {
     )
   }
 
-  val t4 = test("createValidPeople") {
+  private val t4 = test("createValidPeople") {
     createValidPeople =?= List(Person("Tokyo", 30), Person("Berlin", 43)) |
       "should return a List of Person instances"
   }
 
-  val t5 = test("collectErrors") {
+  private val t5 = test("collectErrors") {
 
     def assertSameException(e1: Exception, e2: Exception): ContinueSyntax =
       e1.getClass == e2.getClass | "ex class" and
