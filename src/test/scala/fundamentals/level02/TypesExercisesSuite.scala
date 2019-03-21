@@ -2,7 +2,6 @@ package fundamentals.level02
 
 import fundamentals.level02.TypesExercises._
 import boon._
-import boon.model.BoonType
 import syntax._
 
 object TypesExercisesSuite extends SuiteLike("TypesExercisesTest") {

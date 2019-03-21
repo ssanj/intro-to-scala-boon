@@ -2,7 +2,6 @@ package fundamentals.level03
 
 import fundamentals.level03.ExceptionExercises._
 import boon._
-import boon.model.BoonType
 import syntax._
 
 object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
@@ -61,8 +60,8 @@ object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
   private val t5 = test("collectErrors") {
 
     def assertSameException(e1: Exception, e2: Exception): ContinueSyntax =
-      e1.getClass == e2.getClass | "ex class" and
-      e1.getMessage =?= e2.getMessage | "ex message"
+      e1.getClass == e2.getClass | s"${e1.getClass.getName} class" and
+      e1.getMessage =?= e2.getMessage | s"${e1.getClass.getName} message"
 
     val expectedErrors = List(
       new InvalidAgeValueException("provided age is invalid: 5o"),
@@ -72,8 +71,6 @@ object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
     )
 
     ->|>(
-      !collectErrors.isEmpty | "have errors",
-
       collectErrors.size =?= expectedErrors.size | "have expected number of errors",
 
       % {

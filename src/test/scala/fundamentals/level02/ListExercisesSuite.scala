@@ -3,7 +3,6 @@ package fundamentals.level02
 import fundamentals.level02.ListExercises._
 import fundamentals.level02.TypesExercises.{Person, showPerson1}
 import boon._
-import boon.model.BoonType
 import syntax._
 
 object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
