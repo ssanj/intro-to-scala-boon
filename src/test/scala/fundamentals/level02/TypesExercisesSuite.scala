@@ -46,17 +46,11 @@ object TypesExercisesSuite extends SuiteLike("TypesExercisesTest") {
   }
 
   private val t6 = test("showTrafficLightStr") {
-    ->>(
-      showTrafficLightStr("red")      =?= "The traffic light is red"      | "should show red"   ,
-
-      showTrafficLightStr("yellow")   =?= "The traffic light is yellow"   | "should show yellow",
-
-      showTrafficLightStr("green")    =?= "The traffic light is green"    | "should show green" ,
-
-      showTrafficLightStr("purple")   =?= "invalid traffic light: purple" | "should return a default on other inputs",
-
-      showTrafficLightStr("flashing") =?= "The traffic light is flashing" | "should show flashing"
-    )
+    showTrafficLightStr("red")      =?= "The traffic light is red"      | "should show red"    and
+    showTrafficLightStr("yellow")   =?= "The traffic light is yellow"   | "should show yellow" and
+    showTrafficLightStr("green")    =?= "The traffic light is green"    | "should show green"  and
+    showTrafficLightStr("purple")   =?= "invalid traffic light: purple" | "should return a default on other inputs" and
+    showTrafficLightStr("flashing") =?= "The traffic light is flashing" | "should show flashing"
   }
 
   // describe("showTrafficLight") {
@@ -85,5 +79,5 @@ object TypesExercisesSuite extends SuiteLike("TypesExercisesTest") {
 
   // }
 
-  val tests = NonEmptySeq.nes(t1, t2, t3, t4, t5, t6)
+  override val tests = oneOrMore(t1, t2, t3, t4, t5, t6)
 }
