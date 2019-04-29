@@ -2,18 +2,17 @@ package fundamentals.level03
 
 import fundamentals.level03.NullExercises._
 import boon._
-import syntax._
-import notNull._
+import syntax.nulls._
 
 object NullExercisesSuite extends SuiteLike("NullExercises") {
 
   private implicit val boonTrafficLight = BoonType.defaults[TrafficLight]
 
   private val t1 = test("mkTrafficLightOrNull") {
-    null_?(mkTrafficLightOrNull("invalid"))   | "null given unknown String" and
-    mkTrafficLightOrNull("red")    =?= Red    | "Red"                       and
-    mkTrafficLightOrNull("yellow") =?= Yellow | "Yellow"                    and
-    mkTrafficLightOrNull("green")  =?= Green  | "Green"
+    null_?(mkTrafficLightOrNull("invalid"))(pass | "null given unknown String") and
+    mkTrafficLightOrNull("red")    =?= Red       | "Red"                        and
+    mkTrafficLightOrNull("yellow") =?= Yellow    | "Yellow"                     and
+    mkTrafficLightOrNull("green")  =?= Green     | "Green"
   }
 
   private val t2 = test("mkTrafficLightOrNullThenShow") {

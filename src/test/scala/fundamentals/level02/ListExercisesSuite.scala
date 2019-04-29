@@ -18,17 +18,17 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
   }
 
   private val t3 = test("empty") {
-    isEmptyList(Nil) | "should return True for Nil" and
+    isEmptyList(Nil)            | "should return True for Nil" and
     !isEmptyList(1 :: 2 :: Nil) | "should return False for non-empty List"
   }
 
   private val t4 = test("size") {
-    showListSize(Nil) =?= "This is an empty list" | "should show size for Nil" and
+    showListSize(Nil) =?= "This is an empty list"                   | "should show size for Nil" and
     showListSize(1 :: 2 :: 3 :: Nil) =?= "This is a list of size 3" | "should show size for non-empty List"
   }
 
   private val t5 = test("map") {
-    addNumToEach(5, Nil) =?= Nil | "should return Nil given Nil" and
+    addNumToEach(5, Nil) =?= Nil                     | "should return Nil given Nil" and
     addNumToEach(5, List(1, 2, 3)) =?= List(6, 7, 8) | "should add 5 to each element of non-empty List"
   }
 
@@ -37,19 +37,19 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
   }
 
   private val t7 = test("product") {
-    product(Nil) =?= 1 | "should return 1 given Nil" and
+    product(Nil) =?= 1            | "should return 1 given Nil" and
     product(List(2, 5, 3)) =?= 30 | "should multiply all the elements of non-empty List"
   }
 
   private val t8 = test("min") {
     min(Nil) =?= Int.MinValue | "should return smallest Int given Nil" and
-    min(List(4, 6, 1)) =?= 1 | "should return smallest number in non-empty List"
+    min(List(4, 6, 1)) =?= 1  | "should return smallest number in non-empty List"
   }
 
   private val t9 = test("youngest") {
     youngestPerson(Nil) =?= Person("Nobody", 0) | "should return a silly default person given Nil" and
     %@(Person("Karen Page", 27)){ youngest =>
-      youngestPerson(peopleList) =?= youngest |
+      youngestPerson(peopleList) =?= youngest   |
         "should return the first person in the list with the smallest age given a non-empty List"
     }
   }
@@ -68,23 +68,23 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
   private val t11 = test("showEveryNthPerson") {
     val people = ListExercises.peopleList
     val all = people.map(showPerson1)
-    showEveryNthPerson(-5, people) =?= all | "negative index" and
-    showEveryNthPerson(0, people)  =?= all | "index zero" and
-    showEveryNthPerson(1, people)  =?= all | "index one" and
+    showEveryNthPerson(-5, people) =?= all                                      | "negative index" and
+    showEveryNthPerson(0, people)  =?= all                                      | "index zero"     and
+    showEveryNthPerson(1, people)  =?= all                                      | "index one"      and
     showEveryNthPerson(2, people)  =?= (
       List(
             "Karen Page is 27 years old",
             "Claire Temple is 32 years old",
             "Elektra Natchios is 27 years old"
-      )) | "index two" and
+      ))                                                                        | "index two"      and
     showEveryNthPerson(3, people)  =?= (
       List(
             "Franklin 'Foggy' Nelson is 31 years old",
             "Elektra Natchios is 27 years old"
-      )) | "index three" and
-    showEveryNthPerson(5, people)  =?= List("Wilson Fisk is 42 years old") |  "index four" and
-    showEveryNthPerson(6, people)  =?= List("Elektra Natchios is 27 years old")  | "index five" and
-    showEveryNthPerson(8, people)  =?= Nil  | "index six"
+      ))                                                                        | "index three"    and
+    showEveryNthPerson(5, people)  =?= List("Wilson Fisk is 42 years old")      |  "index four"    and
+    showEveryNthPerson(6, people)  =?= List("Elektra Natchios is 27 years old") | "index five"     and
+    showEveryNthPerson(8, people)  =?= Nil                                      | "index six"
   }
 
   override def tests = oneOrMore(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11)

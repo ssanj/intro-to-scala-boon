@@ -2,7 +2,8 @@ package fundamentals.level03
 
 import fundamentals.level03.ExceptionExercises._
 import boon._
-import syntax._
+import model.AssertionData
+import syntax.exception._
 
 object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
 
@@ -20,8 +21,8 @@ object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
       "should throw an InvalidAgeValueException if the age supplied is not an Int") and
     getAge("0") =!=[InvalidAgeRangeException](_ =?= "provided age should be between 1-120: 0" |
       "should throw an InvalidAgeRangeException if the age supplied is lower than range 1-120") and
-    getAge("1") =?= 1 | "should accept an age of one" and
-    getAge("120")   =?= 120 | "should accept an age of a hundred and twenty" and
+    getAge("1") =?= 1     | "should accept an age of one" and
+    getAge("120") =?= 120 | "should accept an age of a hundred and twenty" and
     getAge("121") =!=[InvalidAgeRangeException](_ =?= "provided age should be between 1-120: 121" |
       "should throw an InvalidAgeRangeException if the age supplied is higher than range 1-120")
   }
@@ -44,9 +45,9 @@ object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
 
   private val t5 = test("collectErrors") {
 
-    def assertSameException(e1: Exception, e2: Exception): ContinueSyntax =
+    def assertSameException(e1: Exception, e2: Exception): AssertionData =
       e1.getClass.getName =?= e2.getClass.getName | s"${e1.getClass.getName} class" and
-      e1.getMessage =?= e2.getMessage | s"${e1.getClass.getName} message"
+      e1.getMessage =?= e2.getMessage             | s"${e1.getClass.getName} message"
 
     val expectedErrors = List(
       new InvalidAgeValueException("provided age is invalid: 5o"),
