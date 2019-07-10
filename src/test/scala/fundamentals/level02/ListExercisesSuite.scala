@@ -86,8 +86,24 @@ object ListExercisesSuite extends SuiteLike("ListExercisesSuite") {
     showEveryNthPerson(6, people)  =?= List("Elektra Natchios is 27 years old") | "index five"     and
     showEveryNthPerson(8, people)  =?= Nil                                      | "index six"
   }
+ 
+   val t12 = test("sublists") {
+     val inputList = List("a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e")
+     val expected  = List(List("a", "a", "a", "a"), List("b"), List("c", "c"), List("a", "a"), List("d"), List("e", "e", "e", "e"))
+     val result = sublists(inputList)
 
-  override def tests = oneOrMore(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11)
+     result =?= expected | "sublists match"
+   }
+
+  //   it("should pack consecutive duplicates of list elements into sublists") {
+  //     val inputList = List("a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e")
+  //     val result = sublists(inputList)
+  //     assert(result === List(List("a", "a", "a", "a"), List("b"), List("c", "c"), List("a", "a"), List("d"), List("e", "e", "e", "e")))
+  //   }
+
+  // } 
+
+  override def tests = oneOrMore(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12)
 
   // describe("getNames") {
 

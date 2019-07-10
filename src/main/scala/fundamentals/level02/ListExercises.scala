@@ -282,5 +282,15 @@ object ListExercises {
     * Given: val l1 = List("a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e")
     * sublists(l1) == List(List("a", "a", "a", "a"), List("b"), List("c", "c"), List("a", "a"), List("d"), List("e", "e", "e", "e"))
     */
-  def sublists[A](xs: List[A]): List[List[A]] = ???
+  def sublists[A](xs: List[A]): List[List[A]] = {
+    xs.foldLeft(List.empty[List[A]]) {
+      case (acc, v) => 
+        if (acc.isEmpty) acc :+ List(v)
+        else {
+          val last = acc.last //safe because we know acc is not empty
+          if (last.contains(v)) acc.dropRight(1) :+ (v :: last)
+          else acc :+ List(v)
+        }
+    }
+  }
 }

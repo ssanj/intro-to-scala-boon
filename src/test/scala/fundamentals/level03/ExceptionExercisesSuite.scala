@@ -4,6 +4,8 @@ import fundamentals.level03.ExceptionExercises._
 import boon._
 import model.AssertionData
 import syntax.exception._
+import syntax.equal._
+import syntax.collection._
 
 object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
 
@@ -45,24 +47,17 @@ object ExceptionExercisesSuite extends SuiteLike("ExceptionExercisesTest") {
 
   private val t5 = test("collectErrors") {
 
-    def assertSameException(e1: Exception, e2: Exception): AssertionData =
-      e1.getClass.getName =?= e2.getClass.getName | s"${e1.getClass.getName} class" and
-      e1.getMessage =?= e2.getMessage             | s"${e1.getClass.getName} message"
-
-    val expectedErrors = List(
+    val expectedErrors = oneOrMore[Throwable](
       new InvalidAgeValueException("provided age is invalid: 5o"),
       new InvalidAgeRangeException("provided age should be between 1-120: 200"),
       new InvalidAgeRangeException("provided age should be between 1-120: 0"),
       new EmptyNameException("provided name is empty")
     )
 
-    collectErrors.size =?= expectedErrors.size | "have expected number of errors" and
-    %@(collectErrors.zip(expectedErrors).map {
-        case (e1, e2) => assertSameException(e1, e2)
-      }){ assertions =>
-        //we know collectErrors is not empty so we can call .head safely
-        oneOrMore(assertions.head, assertions.tail:_*)
-    } seq()
+    implicit val diffThrowable = model.Difference.genericDifference[Throwable]
+
+    positionalSeq[Throwable](collectErrors, "collectErrors")(
+      expectedErrors.map(isSame(_: Throwable))).seq()
   }
 
   override val tests = oneOrMore(t1, t2, t3, t4, t5)
