@@ -139,6 +139,8 @@ object TypesExercises {
 
   case object Green extends TrafficLight
 
+  case object Flashing extends TrafficLight
+
   /**
     * scala> showTrafficLight(Red)
     * = "The traffic light is red"
@@ -154,7 +156,12 @@ object TypesExercises {
     * Hint: Use pattern matching
     **/
 
-  def showTrafficLight(trafficLight: TrafficLight): String = ???
+  def showTrafficLight(trafficLight: TrafficLight): String = trafficLight match {
+    case Red      => "The traffic light is red"
+    case Yellow   => "The traffic light is yellow"
+    case Green    => "The traffic light is green"
+    case Flashing => "The traffic light is flashing"
+  }
 
   /**
     * Now introduce a new type of `TrafficLight` called `Flashing`.

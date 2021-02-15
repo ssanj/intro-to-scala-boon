@@ -9,75 +9,58 @@ object TypesExercisesSuite extends SuiteLike("TypesExercisesTest") {
   private implicit val personBoonType = BoonType.defaults[Person]
   private implicit val walletBoonType = BoonType.defaults[Wallet]
 
-  private val t1 = test("showPerson1") {
-    val person = Person("Bob", 50)
+  override val tests = oneOrMore(
+    test("showPerson1") {
+      val person = Person("Bob", 50)
+      showPerson1(person) =?= "Bob is 50 years old" | "should turn Bob into a String"
+    },
 
-    showPerson1(person) =?= "Bob is 50 years old" | "should turn Bob into a String"
-  }
+    test("showPerson2") {
+      val person = Person("Bob", 50)
+      val updatedPerson = showPerson2(person)
 
-  private val t2 = test("showPerson2") {
-    val person = Person("Bob", 50)
-    val updatedPerson = showPerson2(person)
+      updatedPerson =?= "Bob is 50 years old" | "should turn Bob into a String"
+    },
 
-    updatedPerson =?= "Bob is 50 years old" | "should turn Bob into a String"
-  }
+    test("changeName") {
+      val person = Person("Bob", 50)
+      val updatedPerson = changeName("Sarah", person)
 
-  private val t3 = test("changeName") {
-    val person = Person("Bob", 50)
-    val updatedPerson = changeName("Sarah", person)
+      updatedPerson =?= Person("Sarah", 50) | "should update the Person's name" and
+      person        =?= Person("Bob", 50)   | "Should copy person" // assertion is unnecessary, but shows immutability
+    },
 
-    updatedPerson =?= Person("Sarah", 50) | "should update the Person's name" and
-    person        =?= Person("Bob", 50)   | "Should copy person" // assertion is unnecessary, but shows immutability
-  }
+    test("showWallet") {
+      val wallet = Wallet(23.4)
+      val str = showWallet(wallet)
 
-  private val t4 = test("showWallet") {
-    val wallet = Wallet(23.4)
-    val str = showWallet(wallet)
+      str =?= "The wallet amount is 23.4" | "should show the wallet amount as a String"
+    },
 
-    str =?= "The wallet amount is 23.4" | "should show the wallet amount as a String"
-  }
+    test("purchase") {
+      val wallet = Wallet(100)
+      val updatedWallet = purchase(25, wallet)
 
-  private val t5 = test("purchase") {
-    val wallet = Wallet(100)
-    val updatedWallet = purchase(25, wallet)
+      updatedWallet =?= Wallet(75)  | "should return a wallet with cost deducted" and
+      wallet        =?= Wallet(100) | "should not mutate the original wallet"
+    },
 
-    updatedWallet =?= Wallet(75)  | "should return a wallet with cost deducted" and
-    wallet        =?= Wallet(100) | "should not mutate the original wallet"
-  }
+    test("showTrafficLightStr") {
+      showTrafficLightStr("red")      =?= "The traffic light is red"      | "should show red"    and
+      showTrafficLightStr("yellow")   =?= "The traffic light is yellow"   | "should show yellow" and
+      showTrafficLightStr("green")    =?= "The traffic light is green"    | "should show green"  and
+      showTrafficLightStr("purple")   =?= "invalid traffic light: purple" | "should return a default on other inputs" and
+      showTrafficLightStr("flashing") =?= "The traffic light is flashing" | "should show flashing"
+    },
 
-  private val t6 = test("showTrafficLightStr") {
-    showTrafficLightStr("red")      =?= "The traffic light is red"      | "should show red"    and
-    showTrafficLightStr("yellow")   =?= "The traffic light is yellow"   | "should show yellow" and
-    showTrafficLightStr("green")    =?= "The traffic light is green"    | "should show green"  and
-    showTrafficLightStr("purple")   =?= "invalid traffic light: purple" | "should return a default on other inputs" and
-    showTrafficLightStr("flashing") =?= "The traffic light is flashing" | "should show flashing"
-  }
+    test("showTrafficLight") {
+      oneOrMore(
+        showTrafficLight(Red)      =?= "The traffic light is red"      | "should show Red",
+        showTrafficLight(Yellow)   =?= "The traffic light is yellow"   | "should show Yellow",
+        showTrafficLight(Green)    =?= "The traffic light is green"    | "should show Green",
+        showTrafficLight(Flashing) =?= "The traffic light is flashing" | "should show Flashing"
+      )
+    }
 
-  // describe("showTrafficLight") {
-
-  //   it("should show Red") {
-  //     val str = showTrafficLight(Red)
-
-  //     assert(str === "The traffic light is red")
-  //   }
-
-  //   it("should show Yellow") {
-  //     val str = showTrafficLight(Yellow)
-
-  //     assert(str === "The traffic light is yellow")
-  //   }
-
-  //   it("should show Green") {
-  //     val str = showTrafficLight(Green)
-
-  //     assert(str === "The traffic light is green")
-  //   }
-
-  //   it("should show Flashing") {
-  //     ???
-  //   }
-
-  // }
-
-  override val tests = oneOrMore(t1, t2, t3, t4, t5, t6)
+  )
 }
